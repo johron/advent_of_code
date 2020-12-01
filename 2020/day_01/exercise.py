@@ -1,37 +1,22 @@
 
 import argparse
+import itertools
+import math
 parser = argparse.ArgumentParser()
 parser.add_argument('-f', required=True)
 
-def fibbonacci(n):
-    if n == 0:
-        return 0
-    if n == 1:
-        return 1
-    return fibbonacci(n-1) + fibbonacci(n-2)
-
-def recursive_solve(numbers, current_sum, remaining_layers, expected_sum):
-    return 0
-
-def get_expense_report_number_2(numbers, expected_nr):
-    for first in range(0, len(numbers)):
-        for second in range(first+1, len(numbers)):
-            if numbers[first] + numbers[second] == expected_nr:
-                return numbers[first] * numbers[second]
-
-def get_expense_report_number_3(numbers, expected_nr):
-    for first in range(0, len(numbers)):
-        for second in range(first+1, len(numbers)):
-            for third in range(second+1, len(numbers)):
-                if numbers[first] + numbers[second] + numbers[third] == expected_nr:
-                    return numbers[first] * numbers[second] * numbers[third]
+def get_expense_report_nr(numbers, count, expected_sum):
+    for current in itertools.permutations(numbers, count):
+        if sum(current) == expected_sum:
+            return math.prod(current)
+    return None
 
 if __name__ == '__main__':
     args = parser.parse_args()
     with open(args.f) as input_file:
-        content = input_file.read()
+        numbers = [int(n) for n in input_file.read().splitlines()]
 
-    numbers = [int(n) for n in content.splitlines()]
-    print(f'expense report number: {get_expense_report_number_3(numbers, 2020)}')
+        print(f'number[2]: {get_expense_report_nr(numbers, 2, 2020)}')
+        print(f'number[3]: {get_expense_report_nr(numbers, 3, 2020)}')
 
     
